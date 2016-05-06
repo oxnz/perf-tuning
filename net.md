@@ -15,7 +15,7 @@ net.core.wmem_default = 31457280
 # Maximum Socket Send Buffer
 net.core.wmem_max = 12582912
 
-# Increase number of incoming connections
+# Increase socket listening backlog
 net.core.somaxconn = 4096
 
 # Increase number of incoming connections backlog
@@ -40,7 +40,18 @@ net.ipv4.udp_wmem_min = 16384
 # Increase the tcp-time-wait buckets pool size to prevent simple DOS attacks
 net.ipv4.tcp_max_tw_buckets = 1440000
 net.ipv4.tcp_tw_recycle = 1
-net.ipv4.tcp_tw_reuse = 1</pre>
+net.ipv4.tcp_tw_reuse = 1
+
+# Increse system IP port range limits to allow more connections
+# RHEL 7 default: 32768	61000
+net.ipv4.ip_local_port_range = 2000 65535
+
+net.ipv4.tcp_window_scaling = 1
+
+# Number of packets to keep in backlog before the kernel starts to dropping them
+net.ipv4.tcp_max_syn_backlog = 3240000
+
+net.ipv4.tcp_congestion_control = cubic
 ```
 
 ## Security
@@ -48,9 +59,6 @@ net.ipv4.tcp_tw_reuse = 1</pre>
 ```
 # Number of times SYNACKs for passive TCP connection.
 net.ipv4.tcp_synack_retries = 2
-
-# RHEL 7 default: 32768	61000
-net.ipv4.ip_local_port_range = 2000 65535
 
 # Protect Against TCP Time-Wait
 net.ipv4.tcp_rfc1337 = 1
@@ -62,4 +70,15 @@ net.ipv4.tcp_fin_timeout = 15
 net.ipv4.tcp_keepalive_time = 300
 net.ipv4.tcp_keepalive_probes = 5
 net.ipv4.tcp_keepalive_intvl = 15
+
+# Controls source route verification
+net.ipv4.conf.default.rp_filter = 1
+
+# Do not accept source routing
+net.ipv4.conf.default.accept_source_route = 0
 ```
+
+## Functionality
+
+# Controls IP packet forwarding
+net.ipv4.ip_forward = 0
